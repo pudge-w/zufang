@@ -12,6 +12,8 @@ import "./style.less"
 const Index = () => {
   const [title, setTitle] = useState('我要租房');
   const [cityId, setCityId] = useState(0);
+  const [areaId, setAreaId] = useState(0);
+  const [price, setPrice] = useState('');
   const [rentList, setRentList] = useState([]);
 
   useEffect(() => {
@@ -28,12 +30,20 @@ const Index = () => {
         console.log(res.msg)
       }
     })()
-  }, [])
+  }, [areaId, price])
 
   const getList = () => {
-    return fetch(`http://10.31.162.37:2000/api/renting/list?cityId=${cityId}&areaId=0`)
+    return fetch(`http://10.31.162.37:2000/api/renting/list?cityId=${cityId}&areaId=${areaId}&price=${price}`)
       .then(response => response.json())
       .then(res => res)
+  }
+
+  const getAreaId = (id) => {
+    setAreaId(id)
+  }
+
+  const getMoney = (str) => {
+    setPrice(str)
   }
 
   return (
@@ -42,7 +52,7 @@ const Index = () => {
 
       <Search title={title}></Search>
 
-      <Tarbar cityId={cityId}></Tarbar>
+      <Tarbar cityId={cityId} onReceive={getAreaId} onReceive2={getMoney}></Tarbar>
 
       <RentList rentList={rentList}></RentList>
     </div>

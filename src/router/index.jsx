@@ -36,7 +36,7 @@ const Router = () => {
             </Switch>
           </Home>
         </Auth>
-        <Route path="/detail"><Detail></Detail></Route>
+        <Route path="/detail/:id"><Detail></Detail></Route>
         <Route path="/city"><Cities></Cities></Route>
       </Switch>
     </App>
