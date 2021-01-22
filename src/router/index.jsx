@@ -14,7 +14,7 @@ import Publish from "@/home/publish/Index";
 const Auth = (props) => {
   return (
     <Route path={props.path} render={() => {
-      return localStorage.getItem('token') ? 
+      return localStorage.getItem('cityId') ? 
         ( props.children ) : 
         (<Redirect from={props.path} to="/city"></Redirect>)
     }}></Route>
@@ -29,6 +29,7 @@ const Router = () => {
         <Auth path="/home">
           <Home>
             <Switch>
+              <Redirect from="/home" to="/home/rent" exact></Redirect>
               <Route path="/home/rent"><Rent></Rent></Route>
               <Route path="/home/order"><Order></Order></Route>
               <Route path="/home/publish"><Publish></Publish></Route>

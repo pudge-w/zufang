@@ -4,6 +4,7 @@
   flex-direction: column;
   .router-view {
     flex: 1;
+    overflow: auto;
   }
   footer {
     height: 45px;
@@ -20,6 +21,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+        .active {
+          color: red;
         }
       }
     }
