@@ -6,6 +6,8 @@ import Tarbar from './ui/Tarbar';
 import RentList from './ui/RentList';
 import storage from '@/utils/setStorage';
 
+import {getRentingList} from '@/utils/api'
+
 import "./style.less"
 
 
@@ -23,20 +25,16 @@ const Index = () => {
 
   useEffect(() => {
     (async() => {
-      const res = await getList()
-      if (res.status === 0) {
+      const res = await getRentingList({
+        cityId,
+        areaId,
+        price
+      });
+      if (res) {
         setRentList(res.result);
-      } else {
-        console.log(res.msg)
       }
     })()
   }, [areaId, price])
-
-  const getList = () => {
-    return fetch(`http://10.31.162.37:2000/api/renting/list?cityId=${cityId}&areaId=${areaId}&price=${price}`)
-      .then(response => response.json())
-      .then(res => res)
-  }
 
   const getAreaId = (id) => {
     setAreaId(id)

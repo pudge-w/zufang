@@ -1,32 +1,26 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NavBar, Icon, WingBlank, WhiteSpace } from "antd-mobile";
 import { useHistory } from 'react-router-dom';
 
 import storage from '@/utils/setStorage';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import "./style.less"
 
 const Index = () => {
   // hooks只能在顶层调用
   const history = useHistory();
-
-  const [list, setList] = useState([]);
+  const dispatch = useDispatch();
+  // const cityList = useSelector(state => state.cityReducer.cityList);
+  const cityList = useSelector(state => state.getIn(['cityReducer', 'cityList']));
 
   useEffect(() => {
-    (async() => {
-      const res = await getCitiesList();
-      if (res.status === 0) {
-        setList(res.result)
-      }
-    })()
+    dispatch({
+      type: 'GET_CITY'
+    })
   }, [])
-
-  const getCitiesList = () => {
-    return fetch('http://10.31.162.37:2000/api/cities')
-      .then(response => response.json())
-      .then(res => res)
-  }
 
   const goBack = () => {
     history.go(-1);
@@ -34,7 +28,6 @@ const Index = () => {
 
   const saveCity = (item) => {
     return () => {
-      // localStorage.setItem('cityId', item.id);
       storage.set('cityId', item)
       history.push('/home')
     }
@@ -56,7 +49,7 @@ const Index = () => {
 
           <ul>
             {
-              list.map(item => (
+              cityList.map(item => (
                 <li key={item.id} onClick={saveCity(item)}>{item.city}</li>
               ))
             }

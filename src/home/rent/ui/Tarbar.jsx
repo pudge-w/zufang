@@ -1,6 +1,8 @@
 /* eslint-disable */
 import React, {useState, useEffect} from 'react';
 import "./style.less";
+// import { getArea } from '../../../utils/api';
+import { useDispatch, useSelector } from 'react-redux';
 
 const moneyList = [
   {
@@ -26,18 +28,24 @@ const TabBar = (props) => {
   const {cityId} = props
 
   const [isShow, setIsShow] = useState(0);
-  const [areaList, setAreaList] = useState([]);
+  // const [areaList, setAreaList] = useState([]);
 
-  const getArea = () => {
-    return fetch(`http://10.31.162.37:2000/api/area/list?cityId=${cityId}`)
-      .then(response => response.json())
-      .then(res => {
-        if(res.status === 0) {
-          setAreaList(res.result)
-          setIsShow(1)
-        }
-      })
+  const dispatch = useDispatch();
+  // const areaList = useSelector(state => state.tabReducer.areaList);
+  const areaList = useSelector(state => state.getIn(['tabReducer', 'areaList']));
+
+  const getArea2 = async () => {
+    dispatch({
+      type: 'GET_AREA',
+      payload: {
+        cityId
+      }
+    })
   }
+
+  useEffect(() => {
+    setIsShow(1)
+  }, [areaList])
 
   const getMoney = () => {
     setIsShow(2)
@@ -68,7 +76,7 @@ const TabBar = (props) => {
 
   return (
     <div className="tarbar">
-      <div className="item" onClick={getArea}>区域</div>
+      <div className="item" onClick={getArea2}>区域</div>
       <div className="item" onClick={getMoney}>租金</div>
       <div className="item">户型</div>
       <div className="item">更多</div>
